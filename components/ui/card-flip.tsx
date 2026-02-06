@@ -38,7 +38,7 @@ export default function CardFlip({
 
     return (
         <div
-            className="relative w-full max-w-[280px] h-[320px] group [perspective:2000px]"
+            className="relative w-full max-w-[280px] h-[320px] group [perspective:2000px] project-card"
             onMouseEnter={() => setIsFlipped(true)}
             onMouseLeave={() => setIsFlipped(false)}
         >

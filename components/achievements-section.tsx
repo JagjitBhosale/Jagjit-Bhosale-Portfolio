@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { Trophy, Users, Award, Star, Medal } from "lucide-react"
 import Image from "next/image"
 
@@ -11,7 +14,7 @@ export function AchievementsSection() {
       project: "AI-powered civic-tech solution",
       description:
         "Ranked 1st out of 327+ teams with an innovative AI-powered civic-tech solution that impressed judges with its real-world impact and technical excellence.",
-      image: "/hackathon-winner-receiving-trophy-at-tech-competiti.jpg",
+      images: ["/images/Techathon.jpg", "/images/Techathon1.jpg"],
       icon: Trophy,
       color: "text-yellow-400",
       bgColor: "bg-yellow-500/20",
@@ -27,7 +30,7 @@ export function AchievementsSection() {
       project: "AlphaGen - AI Content Creation Platform",
       description:
         "Won the company-sponsored challenge by E6Data & Mira with AlphaGen, an AI platform for content creators featuring auto-generation capabilities.",
-      image: "/young-developer-celebrating-first-place-at-hackath.jpg",
+      images: ["/images/COEPhackathon.jpg", "/images/COEPhackathon1.jpg", "/images/COEPhackathon2.jpg"],
       icon: Medal,
       color: "text-orange-400",
       bgColor: "bg-orange-500/20",
@@ -43,7 +46,7 @@ export function AchievementsSection() {
       project: "EcoSmart - Civic Engagement Platform",
       description:
         "Built EcoSmart for women's college hackathon, receiving praise for its civic engagement impact and innovative approach to community problem-solving.",
-      image: "/team-of-developers-receiving-award-at-hackathon-ce.jpg",
+      images: ["/images/Cummins1.jpg", "/images/Cummins2.jpg", "/images/Cummins3.jpg"],
       icon: Award,
       color: "text-amber-400",
       bgColor: "bg-amber-500/20",
@@ -85,25 +88,20 @@ export function AchievementsSection() {
           ))}
         </div>
 
-        {/* Featured Achievements */}
+        {/* Achievements */}
         <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-white mb-8 text-center gsap-slide-up">Major Wins</h3>
+          <h3 className="text-2xl font-semibold text-white mb-8 text-center gsap-slide-up">Major Wins & Recognition</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {achievements
-              .filter((achievement) => achievement.featured)
-              .map((achievement, index) => (
+            {achievements.map((achievement, index) => (
                 <div
                   key={index}
                   className="group glass-border-enhanced rounded-2xl overflow-hidden hover:scale-[1.02] transition-all duration-300 gsap-scale"
                 >
                   {/* Achievement Image */}
                   <div className="relative h-64 overflow-hidden">
-                    <Image
-                      src={achievement.image || "/placeholder.svg"}
+                    <AchievementImageCarousel
+                      images={achievement.images}
                       alt={`${achievement.title} at ${achievement.event}`}
-                      width={500}
-                      height={300}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
@@ -153,72 +151,59 @@ export function AchievementsSection() {
               ))}
           </div>
         </div>
-
-        {/* Other Achievement */}
-        <div>
-          <h3 className="text-2xl font-semibold text-white mb-8 text-center gsap-slide-up">Additional Recognition</h3>
-          {achievements
-            .filter((achievement) => !achievement.featured)
-            .map((achievement, index) => (
-              <div
-                key={index}
-                className="glass-border rounded-xl p-6 hover:bg-orange-400/5 transition-colors gsap-scale"
-              >
-                {/* Achievement Image */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                  <div className="relative h-48 md:h-32 rounded-lg overflow-hidden">
-                    <Image
-                      src={achievement.image || "/placeholder.svg"}
-                      alt={`${achievement.title} at ${achievement.event}`}
-                      width={300}
-                      height={200}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div
-                      className={`absolute top-2 left-2 flex items-center gap-1 glass-border ${achievement.bgColor} px-2 py-1 rounded-full`}
-                    >
-                      <achievement.icon className={`h-3 w-3 ${achievement.color}`} />
-                      <span className={`${achievement.color} text-xs font-bold`}>{achievement.position}</span>
-                    </div>
-                  </div>
-
-                  {/* Achievement Info */}
-                  <div className="md:col-span-2">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h4 className="text-lg font-semibold text-white mb-1">{achievement.title}</h4>
-                        <p className="text-orange-400 font-medium">{achievement.event}</p>
-                      </div>
-                      <span className="text-gray-400 text-sm">{achievement.date}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 mb-3">
-                      <Users className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-400 text-sm">{achievement.participants}</span>
-                    </div>
-
-                    <div className="mb-3">
-                      <h5 className="font-medium text-white mb-1">Project: {achievement.project}</h5>
-                      <p className="text-gray-300 text-sm">{achievement.description}</p>
-                    </div>
-
-                    <div
-                      className={`${achievement.bgColor} ${achievement.borderColor} border rounded-lg p-2 inline-block`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Award className={`h-3 w-3 ${achievement.color}`} />
-                        <span className={`${achievement.color} font-medium text-xs`}>
-                          Civic Engagement Impact Award
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
       </div>
     </section>
+  )
+}
+
+type AchievementImageCarouselProps = {
+  images: string[]
+  alt: string
+  small?: boolean
+}
+
+function AchievementImageCarousel({ images, alt, small = false }: AchievementImageCarouselProps) {
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length)
+    }, 3500)
+
+    return () => clearInterval(interval)
+  }, [images])
+
+  const heightClass = small ? "h-48 md:h-32" : "h-64"
+
+  return (
+    <div className={`relative w-full ${heightClass}`}>
+      {images.map((src, index) => (
+        <div
+          key={`${src}-${index}`}
+          className={`absolute inset-0 transition-all duration-700 ease-out ${
+            index === activeIndex ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          }`}
+        >
+          <Image src={src || "/placeholder.svg"} alt={alt} fill className="object-cover" />
+        </div>
+      ))}
+
+      {/* Dots */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === activeIndex ? "w-4 bg-orange-400" : "w-2 bg-white/40"
+              }`}
+              onClick={() => setActiveIndex(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }

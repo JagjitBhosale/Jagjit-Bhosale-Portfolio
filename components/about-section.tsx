@@ -73,7 +73,7 @@ export function AboutSection() {
             <div className="space-y-4 text-gray-300 leading-relaxed">
               <p>
                 I'm a B.Tech Computer Science student at Vishwakarma Institute of Information Technology, specializing
-                in AI/ML with a current CGPA of 8.69. My journey in technology began with curiosity about how software
+                in AI/ML with a current CGPA of 8.77. My journey in technology began with curiosity about how software
                 can solve real-world problems.
               </p>
               <p>

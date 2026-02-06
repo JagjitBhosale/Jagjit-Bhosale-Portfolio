@@ -87,7 +87,7 @@ export function PortfolioHeader() {
           {/* Desktop CTA */}
           <div className="hidden md:flex">
             <Button
-              onClick={() => scrollToSection("#contact")}
+              onClick={() => scrollToSection("#contact-form")}
               className="bg-orange-500 text-white font-medium rounded-lg px-6 py-2.5
                          hover:bg-orange-600 hover:shadow-md hover:scale-[1.02]
                          transition-all"
@@ -139,7 +139,7 @@ export function PortfolioHeader() {
                 {/* CTA Button at Bottom */}
                 <div className="mt-auto border-t border-gray-800 p-4">
                   <Button
-                    onClick={() => scrollToSection("#contact")}
+                    onClick={() => scrollToSection("#contact-form")}
                     className="w-full bg-orange-500 text-white font-medium rounded-lg px-6 py-2.5
                                hover:bg-orange-600 hover:shadow-md hover:scale-[1.02]
                                transition-all"

@@ -7,7 +7,7 @@ export function EducationSection() {
       degree: "B.Tech in Computer Science and Engineering (AIML)",
       duration: "2023 – 2027",
       location: "Pune, India",
-      grade: "CGPA – 8.69",
+      grade: "CGPA – 8.77",
       description:
         "Specializing in Artificial Intelligence and Machine Learning with focus on practical applications and research.",
       status: "current",

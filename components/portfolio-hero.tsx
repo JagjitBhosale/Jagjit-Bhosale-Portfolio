@@ -1,8 +1,23 @@
+ "use client"
+
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Github, Linkedin, Mail, Download, MapPin } from "lucide-react"
 
 export function PortfolioHero() {
+  const scrollToContactForm = () => {
+    if (typeof window === "undefined" || typeof document === "undefined") return
+    const el = document.getElementById("contact-form") || document.getElementById("contact")
+    if (!el) return
+
+    const rect = el.getBoundingClientRect()
+    const offset = window.scrollY + rect.top - 400 // adjust 100px above
+
+    window.scrollTo({
+      top: offset,
+      behavior: "smooth",
+    })
+  }
   return (
     <section id="home" className="relative isolate overflow-hidden min-h-screen flex items-center">
       <div className="container mx-auto px-4">
@@ -23,10 +38,15 @@ export function PortfolioHero() {
 
             {/* Contact Info */}
             <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-400 hero-content">
-              <div className="flex items-center gap-2">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=bhosalejagjit05@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-orange-400 transition-colors"
+              >
                 <Mail className="h-4 w-4" />
                 <span>bhosalejagjit05@gmail.com</span>
-              </div>
+              </a>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 <span>Pune, India</span>
@@ -35,13 +55,17 @@ export function PortfolioHero() {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4 hero-content">
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium">
+              <Button
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium"
+                onClick={scrollToContactForm}
+              >
                 <Mail className="h-4 w-4 mr-2" />
                 Get In Touch
               </Button>
               <Button
                 variant="outline"
                 className="border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-black px-6 py-3 rounded-lg font-medium bg-transparent"
+                onClick={() => window.open("/files/Jagjit_Bhosale_CV.pdf", "_blank")}
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download Resume

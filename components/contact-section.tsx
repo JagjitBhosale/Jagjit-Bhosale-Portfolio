@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import emailjs from "@emailjs/browser"
 import { Mail, Phone, MapPin, Github, Linkedin, Download, Send, MessageSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,19 +17,46 @@ export function ContactSection() {
     message: "",
   })
 
+  const [isSending, setIsSending] = useState(false)
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Create mailto link with form data
-    const subject = encodeURIComponent(formData.subject || "Portfolio Contact")
-    const body = encodeURIComponent(
-      `Hi Jagjit,\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
-    )
-    window.location.href = `mailto:bhosalejagjit05@gmail.com?subject=${subject}&body=${body}`
+
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_KEY || "XPBLOagwvYH7IsQr7"
+
+    try {
+      setIsSending(true)
+
+      await emailjs.send(
+        "service_efj7ino", // Service ID
+        "template_ej9jke9", // Template ID
+        {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        publicKey, // Public key (prefer env: NEXT_PUBLIC_EMAILJS_KEY)
+      )
+
+      alert("Message sent successfully!")
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
+    } catch (error) {
+      console.error("EmailJS Error:", error)
+      alert("Failed to send message. Please try again.")
+    } finally {
+      setIsSending(false)
+    }
   }
 
   const handleResumeDownload = () => {
@@ -81,12 +109,14 @@ CERTIFICATIONS
     URL.revokeObjectURL(url)
   }
 
+  const gmailComposeUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=bhosalejagjit05@gmail.com"
+
   const contactInfo = [
     {
       icon: Mail,
       label: "Email",
       value: "bhosalejagjit05@gmail.com",
-      href: "mailto:bhosalejagjit05@gmail.com",
+      href: gmailComposeUrl,
     },
     {
       icon: Phone,
@@ -179,7 +209,10 @@ CERTIFICATIONS
                   <p className="text-gray-400 text-sm">Download my latest resume</p>
                 </div>
               </div>
-              <Button onClick={handleResumeDownload} className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+              <Button
+                onClick={() => window.open("/files/Jagjit_Bhosale_CV.pdf", "_blank")}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Download Resume
               </Button>
@@ -199,7 +232,10 @@ CERTIFICATIONS
           </div>
 
           {/* Contact Form */}
-          <div className="glass-border-enhanced p-8 rounded-2xl h-fit contact-content">
+          <div
+            id="contact-form"
+            className="glass-border-enhanced p-8 rounded-2xl h-fit contact-content"
+          >
             <div className="flex items-center gap-3 mb-6">
               <MessageSquare className="h-6 w-6 text-orange-400" />
               <h3 className="text-xl font-semibold text-white">Send a Message</h3>
@@ -271,9 +307,13 @@ CERTIFICATIONS
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3">
+              <Button
+                type="submit"
+                disabled={isSending}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
                 <Send className="h-4 w-4 mr-2" />
-                Send Message
+                {isSending ? "Sending..." : "Send Message"}
               </Button>
 
               <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
@@ -306,10 +346,7 @@ CERTIFICATIONS
               >
                 <Github className="h-5 w-5" />
               </a>
-              <a
-                href="mailto:bhosalejagjit05@gmail.com"
-                className="text-gray-400 hover:text-orange-400 transition-colors"
-              >
+              <a href={gmailComposeUrl} className="text-gray-400 hover:text-orange-400 transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
             </div>
