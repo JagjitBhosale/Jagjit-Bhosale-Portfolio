@@ -18,7 +18,7 @@ export function ProjectsSection() {
       title: "Retailverse",
       subtitle: "E-commerce collaboration platform",
       description: "Designed 3 Walmart add-on features: Shopping Pods (real-time collaborative carts), AI Smart Search, and Smart Store Navigator with WebSocket-based live updates.",
-      image: "/images/retailverse.png",
+      image: "/images/Retailverse.png",
       technologies: ["Next.js 14", "TypeScript", "WebSocket", "PostgreSQL", "Clerk"],
       liveUrl: "https://Retailverse-six.vercel.app/",
       githubUrl: "#",
